@@ -1,6 +1,6 @@
 # GitMapIQ
 
-GitMapIQ is a GUI application that allows you to explore Git repositories in an interactive and visual way. With features like repository cloning, file browsing, code preview, and AI-powered code explanations, GitMapIQ enhances your development workflow and repository comprehension.
+GitMapIQ is a GUI application that allows you to explore Git repositories in an interactive and visual way. Features like repository cloning, file browsing, code preview, and AI-powered code explanations, GitMapIQ enhances your development workflow and repository comprehension.
 
 ## Features
 
