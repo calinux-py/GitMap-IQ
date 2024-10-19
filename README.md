@@ -18,6 +18,8 @@ GitMap IQ is a GUI application designed to help you explore Git repositories int
 - **Dark Mode**: Toggle between light and dark themes.
 - **File Operations**: Open files or their containing folders directly from the application.
 
+[<img src="https://github.com/calinux-py/GitMap-IQ/blob/main/GitMap%20IQ/config/Screenshot%202024-10-19%20161810.png?raw=true" alt="UniUI" width="63%">](https://github.com/calinux-py/UniUI/blob/main/config/Screenshot%202024-10-10%20204138.png)
+
 ## Installation
 
 ### Prerequisites
