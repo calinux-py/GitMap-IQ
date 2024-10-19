@@ -4,7 +4,7 @@ GitMap IQ is a GUI application designed to help you explore Git repositories int
 
 ![Windows](https://img.shields.io/badge/platform-Windows-blue) ![Python](https://img.shields.io/badge/language-Python-darkgreen) ![OpenAI](https://img.shields.io/badge/OpenAI-412991?logo=openai&logoColor=white)
 
-[<img src="https://github.com/calinux-py/GitMap-IQ/blob/main/GitMap%20IQ/config/Screenshot%202024-10-19%20161600.png?raw=true" alt="UniUI" width="63%">](https://github.com/calinux-py/UniUI/blob/main/config/Screenshot%202024-10-10%20204138.png)
+[<img src="https://github.com/calinux-py/GitMap-IQ/blob/main/GitMap%20IQ/config/Screenshot%202024-10-19%20161600.png?raw=true" alt="UniUI" width="63%">](https://github.com/calinux-py/GitMap-IQ/blob/main/GitMap%20IQ/config/Screenshot%202024-10-19%20161600.png)
 
 ## Features
 
@@ -18,7 +18,7 @@ GitMap IQ is a GUI application designed to help you explore Git repositories int
 - **Dark Mode**: Toggle between light and dark themes.
 - **File Operations**: Open files or their containing folders directly from the application.
 
-[<img src="https://github.com/calinux-py/GitMap-IQ/blob/main/GitMap%20IQ/config/Screenshot%202024-10-19%20161810.png?raw=true" alt="UniUI" width="63%">](https://github.com/calinux-py/UniUI/blob/main/config/Screenshot%202024-10-10%20204138.png)
+[<img src="https://github.com/calinux-py/GitMap-IQ/blob/main/GitMap%20IQ/config/Screenshot%202024-10-19%20161810.png?raw=true" alt="UniUI" width="63%">](https://github.com/calinux-py/GitMap-IQ/blob/main/GitMap%20IQ/config/Screenshot%202024-10-19%20161810.png)
 
 ## Installation
 
@@ -59,6 +59,8 @@ Run the application using the following command:
 ```bash
 python gitmap.py
 ```
+
+[<img src="https://github.com/calinux-py/GitMap-IQ/blob/main/GitMap%20IQ/config/Screenshot%202024-10-19%20161732.png?raw=true" alt="UniUI" width="63%">](https://github.com/calinux-py/GitMap-IQ/blob/main/GitMap%20IQ/config/Screenshot%202024-10-19%20161732.png)
 
 ## User Interface Overview
 
