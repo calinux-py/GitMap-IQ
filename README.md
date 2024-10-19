@@ -2,6 +2,10 @@
 
 GitMap IQ is a GUI application designed to help you explore Git repositories interactively and visually. Features like repository cloning, file browsing, code previews, and AI-powered code explanations--GitMap IQ simplifies understanding repositories and directories.
 
+![Windows](https://img.shields.io/badge/platform-Windows-blue) ![Python](https://img.shields.io/badge/language-Python-darkgreen) ![OpenAI](https://img.shields.io/badge/OpenAI-412991?logo=openai&logoColor=white)
+
+[<img src="https://github.com/calinux-py/UniUI/blob/main/config/Screenshot%202024-10-10%20204138.png?raw=true" alt="UniUI" width="63%">](https://github.com/calinux-py/UniUI/blob/main/config/Screenshot%202024-10-10%20204138.png)
+
 ## Features
 
 - **Clone and Browse Repositories**: Clone Git repositories directly from URLs or browse local directories.
