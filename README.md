@@ -4,7 +4,7 @@ GitMap IQ is a GUI application designed to help you explore Git repositories int
 
 ![Windows](https://img.shields.io/badge/platform-Windows-blue) ![Python](https://img.shields.io/badge/language-Python-darkgreen) ![OpenAI](https://img.shields.io/badge/OpenAI-412991?logo=openai&logoColor=white)
 
-[<img src="https://github.com/calinux-py/GitMap-IQ/blob/main/GitMap%20IQ/config/Screenshot%202024-10-19%20161600.png?raw=true")
+[<img src="https://github.com/calinux-py/GitMap-IQ/blob/main/GitMap%20IQ/config/Screenshot%202024-10-19%20161600.png?raw=true" alt="UniUI" width="63%">](https://github.com/calinux-py/UniUI/blob/main/config/Screenshot%202024-10-10%20204138.png)
 
 ## Features
 
