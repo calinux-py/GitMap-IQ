@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <style>
+  body {
+    background-color: #f0f0f0;
+
+  }
+  .node { 
+    cursor: pointer; 
+  }
+  /* Styles for circles and rectangles */
+  .node circle, .node rect, .node path { 
+    stroke: black; 
+    stroke-width: 0.5px; 
+  }
+  .node text { 
+    font: 12px sans-serif; 
+  }
+  .link { 
+    fill: none; 
+    stroke: #ccc; 
+    stroke-width: 1.5px; 
+  }
+</style>
+
+</head>
+<body>
+
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script>
+    var treeData = {treeData};
+
+    function getMaxDepth(node) {
+      if (!node.children || node.children.length === 0) return 1;
+      return 1 + d3.max(node.children, getMaxDepth);
+    }
+
+    function getMaxBreadth(node, depth = 0, counts = []) {
+      if (counts.length <= depth) counts.push(0);
+      counts[depth] += 1;
+      if (node.children) {
+        node.children.forEach(child => getMaxBreadth(child, depth + 1, counts));
+      }
+      return d3.max(counts);
+    }
+
+    var maxDepth = getMaxDepth(treeData);
+    var maxBreadth = getMaxBreadth(treeData);
+
+    var nodeSpacingY = 60;
+    var nodeSpacingX = 260;
+
+    var margin = { top: 20, right: 120, bottom: 20, left: 120 },
+        width = maxDepth * nodeSpacingX,
+        height = maxBreadth * nodeSpacingY;
+
+    var i = 0, duration = 750;
+    var tree = d3.tree().size([height, width]);
+
+    var svg = d3.select("body").append("svg")
+      .attr("width", width + margin.right + margin.left)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    var root = d3.hierarchy(treeData);
+    root.x0 = height / 2;
+    root.y0 = 0;
+
+    update(root);
+
+    function update(source) {
+      var nodes = root.descendants(),
+          links = root.descendants().slice(1);
+
+      tree(root);
+      nodes.forEach(d => d.y = d.depth * nodeSpacingX);
+
+      var node = svg.selectAll('g.node')
+        .data(nodes, d => d.id || (d.id = ++i));
+
+      var nodeEnter = node.enter().append('g')
+        .attr('class', 'node')
+        .attr("transform", "translate(" + source.y0 + "," + source.x0 + ")");
+
+      nodeEnter.filter(d => d.data.type === 'folder').append('rect')
+        .attr('width', 12)
+        .attr('height', 12)
+        .attr('x', -6) 
+        .attr('y', -6)
+        .attr('fill', d => d._children ? "lightsteelblue" : getNodeColor(d.data))
+        .attr('stroke', 'black')
+        .attr('stroke-width', 0.5)
+        .attr('transform', 'scale(0.1)') 
+        .on("click", (event, d) => {
+          if (d.children) {
+            d._children = d.children;
+            d.children = null;
+          } else {
+            d.children = d._children;
+            d._children = null;
+          }
+          update(d);
+        })
+        .transition()
+        .duration(duration)
+        .attr('transform', 'scale(1)'); 
+
+      nodeEnter.filter(d => d.data.type !== 'folder' && getFileExtension(d.data.name) === 'md')
+	    .append('circle')
+	    .attr('r', 1e-6)
+	    .attr('fill', d => d._children ? "lightsteelblue" : getNodeColor(d.data))
+	    .attr('stroke', 'black')
+	    .attr('stroke-width', 0.5)
+	    .transition()
+	    .duration(duration)
+	    .attr('r', 6);
+
+
+      nodeEnter.filter(d => d.data.type !== 'folder' && getFileExtension(d.data.name) !== 'md')
+        .append('circle')
+        .attr('r', 1e-6) 
+        .attr('fill', d => d._children ? "lightsteelblue" : getNodeColor(d.data))
+        .attr('stroke', 'black')
+        .attr('stroke-width', 0.5)
+        .transition()
+        .duration(duration)
+        .attr('r', 6); 
+
+      nodeEnter.append('text')
+        .attr("dy", ".35em")
+        .attr("x", d => (d.children || d._children) ? -10 : 10)
+        .attr("text-anchor", d => (d.children || d._children) ? "end" : "start")
+        .text(d => d.data.name);
+
+      var nodeUpdate = nodeEnter.merge(node);
+      nodeUpdate.transition()
+        .duration(duration)
+        .attr("transform", d => "translate(" + d.y + "," + d.x + ")");
+
+      nodeUpdate.filter(d => d.data.type !== 'folder' && getFileExtension(d.data.name) === 'md')
+	    .select('circle')
+	    .transition()
+	    .duration(duration)
+	    .attr('r', 6)
+	    .attr('fill', d => d._children ? "lightsteelblue" : getNodeColor(d.data));
+
+
+      nodeUpdate.filter(d => d.data.type !== 'folder' && getFileExtension(d.data.name) !== 'md')
+        .select('circle')
+        .transition()
+        .duration(duration)
+        .attr('r', 6)
+        .style("fill", d => d._children ? "lightsteelblue" : getNodeColor(d.data));
+
+      nodeUpdate.filter(d => d.data.type === 'folder')
+        .select('rect')
+        .transition()
+        .duration(duration)
+        .attr('width', 12)
+        .attr('height', 12)
+        .attr('x', -6)
+        .attr('y', -6)
+        .style("fill", d => d._children ? "lightsteelblue" : getNodeColor(d.data))
+        .attr('transform', 'scale(1)'); 
+
+      nodeUpdate.select('text')
+        .style('fill-opacity', 1);
+
+      var nodeExit = node.exit().transition()
+        .duration(duration)
+        .attr("transform", "translate(" + source.y + "," + source.x + ")")
+        .remove();
+
+      nodeExit.selectAll('circle')
+        .attr('r', 1e-6);
+
+      nodeExit.selectAll('path')
+        .attr('d', d3.symbol().type(d3.symbolStar).size(1e-6));
+
+      nodeExit.selectAll('rect')
+        .attr('width', 1e-6)
+        .attr('height', 1e-6);
+
+      nodeExit.select('text')
+        .style('fill-opacity', 1e-6);
+
+      var link = svg.selectAll('path.link')
+        .data(links, d => d.id);
+
+      var linkEnter = link.enter().insert('path', "g")
+        .attr("class", "link")
+        .attr('d', () => diagonal(source, source));
+
+      var linkUpdate = linkEnter.merge(link);
+      linkUpdate.transition()
+        .duration(duration)
+        .attr('d', d => diagonal(d, d.parent));
+
+      var linkExit = link.exit().transition()
+        .duration(duration)
+        .attr('d', () => diagonal(source, source))
+        .remove();
+
+      nodes.forEach(d => {
+        d.x0 = d.x;
+        d.y0 = d.y;
+      });
+    }
+
+    function diagonal(s, d) {
+      return "M" + s.y + "," + s.x
+           + "C" + (s.y + d.y) / 2 + "," + s.x
+           + " " + (s.y + d.y) / 2 + "," + d.x
+           + " " + d.y + "," + d.x;
+    }
+
+    function getNodeColor(data) {
+      if (data.type === 'folder') return '#FFD700'; 
+      const extension = getFileExtension(data.name);
+      const colorMap = {
+        'md': '#90EE90', 
+        'ini': '#4682B4', 
+        'txt': '#4682B4',
+        'log': '#4682B4',
+        'png': '#ADD8E6', 
+        'jpg': '#ADD8E6',
+        'jpeg': '#ADD8E6',
+        'gif': '#ADD8E6',
+        'bmp': '#ADD8E6',
+        'webm': '#ADD8E6',
+        'tiff': '#ADD8E6',
+        'webp': '#ADD8E6',
+        'mov': '#ADD8E6',
+        'mp4': '#ADD8E6',
+        'mkv': '#ADD8E6',
+        'avi': '#ADD8E6',
+        'mp3': '#ADD8E6',
+        'wav': '#ADD8E6',
+        'flac': '#ADD8E6',
+        'yaml': '#9370DB', 
+        'yml': '#9370DB',
+        'json': '#9370DB',
+        'xml': '#9370DB',
+        'csv': '#9370DB',
+        'tsv': '#9370DB',
+        'toml': '#9370DB',
+        'conf': '#9370DB',
+        'config': '#9370DB',
+        'dat': '#9370DB',
+        'db': '#9370DB',
+        'sql': '#9370DB',
+        'sqlite': '#9370DB',
+        'psv': '#9370DB',
+        'rdf': '#9370DB',
+        'ttl': '#9370DB',
+        'n3': '#9370DB',
+        'nq': '#9370DB',
+        'nt': '#9370DB',
+        'yaml2': '#9370DB',
+        'properties': '#9370DB'
+      };
+      return colorMap[extension] || '#ff6666'; 
+    }
+
+    function getFileExtension(filename) {
+      const parts = filename.split('.');
+      return parts.length > 1 ? parts.pop().toLowerCase() : '';
+    }
+  </script>
+</body>
+</html>
